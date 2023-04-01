@@ -1,0 +1,64 @@
+{
+  "type": "module",
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/main.js",
+  "scripts": {
+    "start": "nodemon main.js",
+    "test": "nodemon --exec mocha --timeout 10000 --recursive"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cuevagit/backend.git"
+  },
+  "author": "Cueva",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/cuevagit/backend/issues"
+  },
+  "homepage": "https://github.com/cuevagit/backend#readme",
+  "dependencies": {
+    "0x": "^5.4.1",
+    "artillery": "^2.0.0-30",
+    "autocannon": "^7.10.0",
+    "axios": "^1.3.4",
+    "bcrypt": "^5.1.0",
+    "colors": "^1.4.0",
+    "compression": "^1.7.4",
+    "connect-mongo": "^4.6.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
+    "ejs": "^3.1.8",
+    "express": "^4.18.2",
+    "express-graphql": "^0.12.0",
+    "express-handlebars": "^6.0.6",
+    "express-pino-logger": "^6.0.0",
+    "express-session": "^1.17.3",
+    "forever": "^0.14.2",
+    "graphql": "^15.8.0",
+    "gzip": "^0.1.0",
+    "http": "^0.0.1-security",
+    "jsonwebtoken": "^9.0.0",
+    "knex": "^2.3.0",
+    "minimist": "^1.2.7",
+    "mongo-store": "^0.0.2",
+    "mongoose": "^6.8.4",
+    "multer": "^1.4.5-lts.1",
+    "mysql2": "^2.3.3",
+    "normalizr": "^3.6.2",
+    "passport": "^0.6.0",
+    "passport-local": "^1.0.0",
+    "pino": "^6.11.3",
+    "pino-pretty": "^5.0.2",
+    "pm2": "^5.2.2",
+    "socket.io": "^4.5.4",
+    "socketio": "^1.0.0",
+    "sqlite3": "^5.1.2",
+    "yargs": "^17.6.2"
+  },
+  "devDependencies": {
+    "@faker-js/faker": "^7.6.0",
+    "mocha": "^10.2.0"
+  }
+}

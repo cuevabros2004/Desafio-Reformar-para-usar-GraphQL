@@ -1,0 +1,20 @@
+[
+  {
+    "_id": "e4a61f4f-4e01-46a7-a823-dbe8e9dc5553",
+    "title": "PRODUCTO Nuevo agregado",
+    "price": 2000,
+    "thumbnail": "sssss"
+  },
+  {
+    "_id": "93a84a54-1dc4-493a-984e-d379e86870dd",
+    "title": "PRODUCTO  28/03",
+    "price": 8000,
+    "thumbnail": "sssss"
+  },
+  {
+    "_id": "fc2051d2-e15b-4864-bdc8-632d95fc4cdc",
+    "title": "PRODUCTO  28/03",
+    "price": 8000,
+    "thumbnail": "sssss"
+  }
+]

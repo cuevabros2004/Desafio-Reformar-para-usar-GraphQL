@@ -1,0 +1,119 @@
+import express from 'express'
+import {routerApi} from "../routers/routerApi.js"
+import { routerApiTest } from "../routers/routerApiTest.js"
+import  routerWeb  from "../routers/routerWeb.js"
+import { engine } from 'express-handlebars'  //handlebars
+import { Server as HttpServer } from 'http'
+import { Server as IOServer } from 'socket.io'
+import login from '../authentication/logIn.js'
+import mongoose from 'mongoose'
+import routerLogin   from '../routers/routerLogin.js'
+import { STRING_CONEXION_MONGO, USUARIO_CONEXION_MONGO, PASSWORD_CONEXION_MONGO,  BD_MONGO} from '../config/config.js'
+import { routerApiRandom } from '../routers/routerApiRandom.js'
+import {PUERTO_POR_DEFECTO} from '../config/config.js'
+import loggerRutaNoDisponible from '../utils/pinoRutaNoDisponible.js'
+import { graphqlMiddleware } from '../negocio/middlewares/graphQL.js'
+import cors from 'cors'
+
+const servidor = express()
+const httpServer = new HttpServer(servidor)
+const io = new IOServer(httpServer)
+import parseArgs from 'yargs/yargs'
+
+//Cors
+servidor.use(cors());
+
+servidor.use('/graphql', graphqlMiddleware)
+
+
+//Middlewares para resolver los datos que viene por el Post
+//Si viene por un Json o si viene de un formulario (Form)
+servidor.use(express.json())
+servidor.use(express.urlencoded({ extended: true }))
+
+login(servidor)
+
+//Middlewares para los routers
+servidor.use('/api/productos', routerApi)
+servidor.use('/api/productos-test', routerApiTest)
+servidor.use('/', routerWeb)
+servidor.use('/', routerLogin)
+servidor.use('/views', express.static('views'))
+servidor.use(express.static('public'))
+servidor.use('/', routerApiRandom)
+
+
+///:id
+
+//handlebars
+servidor.engine('handlebars', engine())
+servidor.set('view engine', 'handlebars')
+
+
+//PRIMERO SACO EL 3ER. PARÁMETRO PASADO POR CONSOLA, 
+//PUEDE SER QUE NO HAYA PASADO EL PUERTO, Y QUE HAYA PASADO EL MODO, 
+//EN ESE CASO TOMO EL VALOR DEL PUERTO POR DEFECTO, DEFINIDO EN LAS VARIABLES DE ENTORNO
+//EN CASO DE HABER PASADO UN PUERTO POR CONSOLA, LO TOMO A ESE PUERTO
+//EN CASO DE NO HABER PASADO UN PUERTO, 
+//TOMO EL VALOR DEL PUERTO POR DEFECTO, DEFINIDO EN LAS VARIABLES DE ENTORNO
+
+const yargs = parseArgs(process.argv.slice(2))
+
+const argv = yargs.alias({p: 'port'}).default({port: PUERTO_POR_DEFECTO}).argv
+
+const puerto = argv.port
+
+  function desconectar() {
+    return new Promise((resolve, reject) => {
+      httpServer.close(err => {
+            resolve(true)
+        })
+    })
+  }
+
+
+async function conectar() {
+
+  try {
+    const mongo = await mongoose.connect(STRING_CONEXION_MONGO + USUARIO_CONEXION_MONGO + ':' + PASSWORD_CONEXION_MONGO + BD_MONGO, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
+    console.log("Connected DB");
+  } catch (error) {
+    console.log(`Error en conexión de Base de datos: ${error}`);
+  }
+  
+
+  return new Promise((resolve, reject) => {
+    const servidorConectado = httpServer.listen(puerto, () => {
+      resolve(servidorConectado)
+    })
+
+  })
+
+
+
+}
+
+
+//webSocket(io)
+
+loggerRutaNoDisponible(servidor)
+
+ export { conectar, desconectar }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
